@@ -20,4 +20,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     url('api/', include('user.urls')),
     url('social/', include('social_auth.urls')),
+    url('truyen/', include('truyen.urls')),
 ]
