@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Truyen, Comment
+from .models import Truyen, Comment, Rate
 
 
 class TruyenSerializer(serializers.ModelSerializer):
@@ -45,6 +45,19 @@ class CommentSerializer(serializers.ModelSerializer):
             'truyen',
             'user',
             'comment',
+            'created_at',
+            'update_at',
+            'removed',
+        )
+
+class RateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Rate
+        fields = (
+            'id',
+            'truyen',
+            'user',
+            'rate',
             'created_at',
             'update_at',
             'removed',

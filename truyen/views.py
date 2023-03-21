@@ -3,8 +3,8 @@ from rest_framework.response import Response
 from rest_framework import status, generics, viewsets
 from rest_framework.views import APIView
 from rest_framework import serializers
-from .models import Truyen, Comment
-from .serializers import TruyenSerializer, TruyenDetailSerializer, CommentSerializer
+from .models import Truyen, Comment, Rate
+from .serializers import TruyenSerializer, TruyenDetailSerializer, CommentSerializer, RateSerializer
 
 
 # Create your views here.
@@ -86,6 +86,9 @@ class TruyenDetailView(APIView):
         obj.save()
         return Response({'msg': 'deleted'}, status=status.HTTP_204_NO_CONTENT)
 
+
+
+############## SORT ###########
 class ViewSortAPI(APIView):
     def get(self, request):
         obj = Truyen.objects.filter(removed=False).order_by('views')[:10]
@@ -99,6 +102,7 @@ class DateSortAPI(APIView):
         return Response(serializer.data, status=200)
 
 
+######## COMMENT ###########
 class CommentAPI(APIView):
     # queryset = Comment.objects.all().order_by('-created_at')
     # serializer_class = CommentSerializer
@@ -154,5 +158,26 @@ class CommentDetailAPI(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+# class RateAPI(APIView):
+#     # queryset = Comment.objects.all().order_by('-created_at')
+#     # serializer_class = CommentSerializer
+#     def get(self, request, id):
+#         user = request.user
+#         rate = Rate.objects.filter(truyen=id, removed=False).order_by('-created_at')
+#         serializer = CommentSerializer(rate, many=True)
+#         return Response(serializer.data, status=200)
+#
+#     def post(self, request, id):
+#         user = request.user
+#         truyen = Truyen.objects.get(id=id)
+#         # if request.user.is_authenticated:
+#         serializer = CommentSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             truyen.number_of_comment = truyen.number_of_comment + 1
+#             truyen.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+#         # return Response({'msg': 'user not authenticated'})
 
 
