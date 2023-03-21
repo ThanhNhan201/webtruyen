@@ -14,7 +14,10 @@ class TruyenApiView(generics.ListCreateAPIView):
     serializer_class = TruyenSerializer
 
     def get(self, request):
+        cmt = Comment.objects.filter(removed=True)
         obj = Truyen.objects.filter(removed=False)
+        for x in obj:
+            x.number_of_comment = x.number_of_comment - len(cmt)
         serializer = TruyenSerializer(obj, many=True)
         return Response(serializer.data, status=200)
 
@@ -118,6 +121,7 @@ class CommentAPI(APIView):
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
         # return Response({'msg': 'user not authenticated'})
 
+class CommentDetailAPI(APIView):
     def delete (self, request, id):
         try:
             obj = Comment.objects.get(id=id)

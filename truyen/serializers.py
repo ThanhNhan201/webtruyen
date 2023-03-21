@@ -32,6 +32,7 @@ class TruyenDetailSerializer(serializers.ModelSerializer):
             'updated_at',
             'follow_up',
             'content',
+            # 'number_of_comment',
             'removed',
         )
 

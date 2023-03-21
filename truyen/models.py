@@ -31,7 +31,7 @@ class Comment(models.Model):
 class Rate(models.Model):
     truyen = models.ForeignKey(Truyen, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    rating = models.CharField(max_length=200)
+    rating = models.SmallIntegerField(default=0, validators=[MaxValueValidator(5), MinValueValidator(1)])
     created_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
     removed = models.BooleanField(default=False)
