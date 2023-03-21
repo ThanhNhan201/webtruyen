@@ -51,6 +51,8 @@ class TruyenDetailView(APIView):
             msg = {"msg": "not found"}
             return Response(msg, status=status.HTTP_400_BAD_REQUEST)
         obj.views = obj.views + 1
+        rate = Rate.objects.filter(removed=False)
+        obj.rating = (obj.rating*(obj.number_of_rating - 1) + rate.rate) / obj.number_of_rating
         obj.save()
         serializer = TruyenDetailSerializer(obj)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -158,26 +160,18 @@ class CommentDetailAPI(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# class RateAPI(APIView):
-#     # queryset = Comment.objects.all().order_by('-created_at')
-#     # serializer_class = CommentSerializer
-#     def get(self, request, id):
-#         user = request.user
-#         rate = Rate.objects.filter(truyen=id, removed=False).order_by('-created_at')
-#         serializer = CommentSerializer(rate, many=True)
-#         return Response(serializer.data, status=200)
-#
-#     def post(self, request, id):
-#         user = request.user
-#         truyen = Truyen.objects.get(id=id)
-#         # if request.user.is_authenticated:
-#         serializer = CommentSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             truyen.number_of_comment = truyen.number_of_comment + 1
-#             truyen.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
-#         # return Response({'msg': 'user not authenticated'})
+class RateAPI(APIView):
+    def post(self, request, id):
+        user = request.user
+        truyen = Truyen.objects.get(id=id)
+        # if request.user.is_authenticated:
+        serializer = RateSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            truyen.number_of_rating = truyen.number_of_rating + 1
+            truyen.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+        # return Response({'msg': 'user not authenticated'})
 
 
