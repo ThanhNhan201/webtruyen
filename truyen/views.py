@@ -107,13 +107,16 @@ class CommentAPI(APIView):
 
     def post(self, request, id):
         user = request.user
-        if request.user.is_authenticated:
-            serializer = CommentSerializer(data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-            return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
-        return Response({'msg': 'user not authenticated'})
+        truyen = Truyen.objects.get(id=id)
+        # if request.user.is_authenticated:
+        serializer = CommentSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            truyen.number_of_comment = truyen.number_of_comment + 1
+            truyen.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+        # return Response({'msg': 'user not authenticated'})
 
     def delete (self, request, id):
         try:
