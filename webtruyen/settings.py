@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
     "django_extensions",
+    'truyen',
     # djangoratings',
 ]
 
@@ -102,7 +103,7 @@ DATABASES = {
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'test1',
+#         'NAME': 'truyen',
 #         'USER': 'postgres',
 #         # 'PASSWORD': 'password',
 #         'HOST': 'localhost',
